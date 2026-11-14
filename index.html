@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Plate Detection Demo</title>
+<style>body{font-family:sans-serif;max-width:900px;margin:30px auto}img{width:100%;background:#111}</style></head>
+<body>
+<h2>License Plate Detection - Video Demo</h2>
+<input type="file" id="f" accept="video/*"> <button onclick="go()">Upload &amp; Detect</button>
+<p id="s"></p><img id="v">
+<script>
+async function go(){
+  const file=document.getElementById('f').files[0]; if(!file) return;
+  document.getElementById('s').textContent='Uploading...';
+  const fd=new FormData(); fd.append('file',file);
+  const r=await (await fetch('/plate-detection/upload',{method:'POST',body:fd})).json();
+  document.getElementById('s').textContent='Live detection (video '+r.video_id+')';
+  document.getElementById('v').src=r.stream_url;
+}
+</script></body></html>
